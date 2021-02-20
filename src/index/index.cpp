@@ -1,19 +1,21 @@
 
 #include "index.h"
 
+const int SIZE_ID_STR = 9; // 4294967295
+const unsigned long int SIZE_NAME = 10; // unsigned long to work with min(token.length(), ...) below
+const unsigned long int SIZE_BIO = 500; // unsigned long to work with min(token.length(), ...) below
+const int SIZE_MID_STR = 9; // 4294967295
+const int SIZE_RECORD_STR = SIZE_ID_STR + SIZE_NAME + SIZE_BIO + SIZE_MID_STR + 4; // Include commas and newline char
+
 struct Record
 {
-  int id;
-  std::string name;
-  std::string bio;
-  int mid;
+  unsigned long int id;
+  char name[SIZE_NAME];
+  char bio[SIZE_BIO];
+  unsigned long int mid;
 };
 
-const int SIZE_ID = 8;
-const int SIZE_NAME = 200;
-const int SIZE_BIO = 500;
-const int SIZE_MID = 8;
-const int SIZE_RECORD = SIZE_ID + SIZE_NAME + SIZE_BIO + SIZE_MID + 4; // Include commas and newline char
+const int SIZE_RECORD = sizeof(Record);
 
 Record parse_line(const std::string record_str)
 {
@@ -31,10 +33,12 @@ Record parse_line(const std::string record_str)
       rec.id = std::stoi(token);
       break;
     case 1:
-      rec.name = token;
+      token.copy(rec.name, SIZE_NAME, 0);
+      rec.name[std::min(token.length(), SIZE_NAME-1)] = 0; // End the string
       break;
     case 2:
-      rec.bio = token;
+      token.copy(rec.bio, SIZE_BIO, 0);
+      rec.bio[std::min(token.length(), SIZE_BIO-1)] = 0;  // End the string
       break;
     case 3:
       rec.mid = std::stoi(token);
@@ -72,6 +76,7 @@ long int get_line(std::FILE *file, long int line_start, std::string &s_buffer)
   }
   //std::cout << c_buffer << std::endl;
   s_buffer = c_buffer;
+  free(c_buffer);
   return new_line;
 }
 
@@ -81,9 +86,7 @@ void create_index(const char *database, const char *index)
   long int f_next = 0;
   std::cout << "Building index..." << std::endl;
 
-  // std::ifstream db(database);
   std::FILE *db = std::fopen(database, "r");
-  // if (!db.is_open())
   if (db == NULL)
   {
     std::cout << "Records file does not exist" << std::endl;

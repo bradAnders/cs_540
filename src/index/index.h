@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream> // CSV file
 #include <sstream> // Record string
+#include <algorithm>    // std::min
 #include <string>
 #include <vector>
 

@@ -4,7 +4,7 @@ clear
 echo "Compiling..."
 make all
 echo "Setting permissions..."
-chmod +x ./src/main
+chmod +x ./src/main.app
 echo "Running binary..."
 echo ""
 echo "./src/main.app"
