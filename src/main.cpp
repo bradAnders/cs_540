@@ -8,7 +8,7 @@ int main(int argc, char **args) {
   char* end;
   cout << argc << endl;
 
-  if (argc == 0)
+  if (argc <= 1)
     return raise("No arguments provided");
 
   if (args[1][0] != '-')

@@ -1,5 +1,5 @@
 main.exe: index/index.o lookup/lookup.o main.o
-	g++ -std=c++11 index/index.o lookup/lookup.o main.o -o main
+	g++ -std=c++11 index/index.o lookup/lookup.o main.o -o main.app
 
 index/index.o: index/index.cpp index/index.h
 	make -C ./index 

@@ -7,5 +7,5 @@ echo "Setting permissions..."
 chmod +x ./src/main
 echo "Running binary..."
 echo ""
-echo "./src/main" 
-./src/main $1 $2 $3
+echo "./src/main.app"
+./src/main.app $1 $2 $3
