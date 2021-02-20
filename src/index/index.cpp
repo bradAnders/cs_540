@@ -15,51 +15,55 @@ const int SIZE_BIO = 500;
 const int SIZE_MID = 8;
 const int SIZE_RECORD = SIZE_ID + SIZE_NAME + SIZE_BIO + SIZE_MID + 4; // Include commas and newline char
 
-Record parse_line(const std::string record_str) {
-    
-    std::istringstream record_steam(record_str);
-    std::string token;
-    Record rec;
+Record parse_line(const std::string record_str)
+{
 
-    for (int i = 0; i < 4; i++)
+  std::istringstream record_steam(record_str);
+  std::string token;
+  Record rec;
+
+  for (int i = 0; i < 4; i++)
+  {
+    std::getline(record_steam, token, ',');
+    switch (i)
     {
-      std::getline(record_steam, token, ',');
-      switch (i)
-      {
-      case 0:
-        rec.id = std::stoi(token);
-        break;
-      case 1:
-        rec.name = token;
-        break;
-      case 2:
-        rec.bio = token;
-        break;
-      case 3:
-        rec.mid = std::stoi(token);
-        break;
+    case 0:
+      rec.id = std::stoi(token);
+      break;
+    case 1:
+      rec.name = token;
+      break;
+    case 2:
+      rec.bio = token;
+      break;
+    case 3:
+      rec.mid = std::stoi(token);
+      break;
 
-      default:
-        break;
-      }
+    default:
+      break;
     }
+  }
 
-    std::cout << rec.id << ", " << rec.name << ", " << rec.mid << std::endl;
-    return rec;
+  std::cout << rec.id << ", " << rec.name << ", " << rec.mid << std::endl;
+  return rec;
 }
 
-long int get_line(std::FILE* file, long int line_start, std::string &s_buffer) {
+long int get_line(std::FILE *file, long int line_start, std::string &s_buffer)
+{
   char b;
-  char *c_buffer = (char*) malloc (SIZE_RECORD+1); // Include space for null char at end
+  char *c_buffer = (char *)malloc(SIZE_RECORD + 1); // Include space for null char at end
   long int new_line;
 
   std::fseek(file, 0, line_start);
 
-  for (int i = 0; i < SIZE_RECORD; i++) {
+  for (int i = 0; i < SIZE_RECORD; i++)
+  {
     b = std::fgetc(file);
     c_buffer[i] = b;
     //std::cout << b;
-    if (b == EOF || b == '\n') {
+    if (b == EOF || b == '\n')
+    {
       new_line = std::ftell(file);
       // std::cout << std::endl << "New line: " << new_line << std::endl;
       c_buffer[i + 1] = 0;
@@ -81,7 +85,7 @@ void create_index(const char *database, const char *index)
   std::FILE *db = std::fopen(database, "r");
   // if (!db.is_open())
   if (db == NULL)
-  { 
+  {
     std::cout << "Records file does not exist" << std::endl;
     return;
   }
@@ -92,13 +96,13 @@ void create_index(const char *database, const char *index)
 
   std::string record_str;
 
-  do {
+  do
+  {
     f_pos = f_next;
     f_next = get_line(db, f_pos, record_str);
     if (f_pos != f_next)
       record = parse_line(record_str);
-    //std::cout << record_str << std::endl;
   } while (f_pos != f_next);
 
-    return;
+  return;
 }
