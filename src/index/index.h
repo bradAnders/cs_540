@@ -4,8 +4,10 @@
 
   // Built in libraries
   #include <iostream>
-
-  using namespace std;
+  #include <fstream> // CSV file
+  #include <sstream> // Record string
+  #include <string>
+  #include <vector>
 
   void create_index(const char* database, const char* index);
 

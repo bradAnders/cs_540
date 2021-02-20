@@ -11,8 +11,6 @@
   #include "index/index.h"
   #include "lookup/lookup.h"
 
-  using namespace std;
-
   const char *F_DATABASE = "Employee.csv";
   const char *F_INDEX = "EmployeeIndex";
 

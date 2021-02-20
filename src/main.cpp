@@ -4,9 +4,9 @@
 
 int main(int argc, char **args) {
   unsigned long long id;
-  string buffer;
+  std::string buffer;
   char* end;
-  cout << argc << endl;
+  std::cout << argc << std::endl;
 
   if (argc <= 1)
     return raise("No arguments provided");
@@ -61,8 +61,8 @@ int main(int argc, char **args) {
 }
 
 int raise(const char *message) {
-  cout << message << endl;
-  cout << "Valid arguments: '-C' for index creation or '-L [id]' for id lookup";
+  std::cout << message << std::endl;
+  std::cout << "Valid arguments: '-C' for index creation or '-L [id]' for id lookup" << std::endl;
   return 1;
 }
 
