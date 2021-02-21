@@ -5,7 +5,7 @@
 // Built in libraries
 #include <iostream>
 #include <ctype.h>
-#include <string>
+#include <string.h>
 
 // Custom libraries
 #include "index/index.h"

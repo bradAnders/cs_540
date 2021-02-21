@@ -5,8 +5,7 @@ int main(int argc, char **args)
 {
   unsigned long long id;
   std::string buffer;
-  char *end;
-  std::cout << argc << std::endl;
+  char *endptr;
 
   if (argc <= 1)
     return raise("No arguments provided");
@@ -42,11 +41,11 @@ int main(int argc, char **args)
       return raise("ID string is too long");
 
     // Id is too big
-    id = strtoull(args[2], &end, 10);
+    id = strtoull(args[2], &endptr, 10);
     if (id > 4294967295)
       return raise("ID max size is 8 bytes");
 
-    //
+    // Id must be positive
     if (id <= 0)
       return raise("ID must be a positive integer");
 

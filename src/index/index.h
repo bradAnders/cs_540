@@ -9,6 +9,7 @@
 #include <algorithm>    // std::min
 #include <string>
 #include <vector>
+#include <cmath>
 
 void create_index(const char *database, const char *index);
 
