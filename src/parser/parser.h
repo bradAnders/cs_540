@@ -4,7 +4,7 @@
 
 // Built in libraries
 #include <iostream>  // cout / cin
-#include <fstream>   // CSV file
+#include <fstream>   // FILE
 #include <sstream>   // Record string
 #include <algorithm> // std::min
 #include <string>    // string
@@ -29,7 +29,7 @@ public:
   bool more_records();
 
 private:
-  std::FILE *file;
+  std::FILE *input_file;
   char* input_filename;
   long int f_pos;
   long int f_next;

@@ -2,7 +2,7 @@
 #include "parser.h"
 
 /**
- * Class constructr
+ * @brief Class constructr
  *
  * @param input_filename Name of the .CSV file to pars
  */
@@ -14,9 +14,9 @@ Parser::Parser(const char *input_filename)
   this->input_filename = new char[strlen(input_filename)];
   strcpy(this->input_filename, input_filename);
 
-  this->file = std::fopen(this->input_filename, "r");
+  this->input_file = std::fopen(this->input_filename, "r");
 
-  if (this->file == NULL)
+  if (this->input_file == NULL)
     throw std::invalid_argument("Records file does not exist");
 
   this->line_buffer = new char[SIZE_RECORD + 1]; // Include space for null char at end
@@ -24,16 +24,17 @@ Parser::Parser(const char *input_filename)
 }
 
 /**
- * Class deconstructor
+ * @brief Class deconstructor
+ * 
  */
 Parser::~Parser(void)
 {
-  std::fclose(this->file);
+  std::fclose(this->input_file);
   delete this->input_filename;
 }
 
 /**
- * Reads the file to get the next record
+ * @brief Reads the file to get the next record
  */
 // TODO - Vectorize this
 Record Parser::next_record()
@@ -42,7 +43,7 @@ Record Parser::next_record()
 }
 
 /**
- * Reads the next row in the file as a string
+ * @brief Reads the next row in the file as a string
  */
 std::string Parser::next_line()
 {
@@ -50,15 +51,15 @@ std::string Parser::next_line()
   std::string next_line = "";
 
   // Move the file cursor to next line
-  std::fseek(this->file, 0, this->f_next);
+  std::fseek(this->input_file, 0, this->f_next);
   this->f_pos = this->f_next;
 
   // Read file character by character
   for (int i = 0; i < SIZE_RECORD; i++)
   {
     // Add the character to the buffer
-    // b = std::fgetc(this->file);
-    this->line_buffer[i] = b = std::fgetc(this->file);
+    // b = std::fgetc(this->input_file);
+    this->line_buffer[i] = b = std::fgetc(this->input_file);
     
     // Found end of line
     if (b == EOF || b == '\n')
@@ -67,7 +68,7 @@ std::string Parser::next_line()
       this->line_buffer[i + 1] = 0;
 
       // Update pointer for next line
-      this->f_next = std::ftell(this->file);
+      this->f_next = std::ftell(this->input_file);
 
       break;
     }
@@ -77,7 +78,7 @@ std::string Parser::next_line()
 }
 
 /**
- * Reads the next row in the file as a string
+ * @brief Reads the next row in the file as a string
  */
 // TODO - Vectorize this
 Record Parser::parse_line(const std::string record_str)
@@ -141,8 +142,8 @@ bool Parser::more_records(void) {
   char b;
 
   // Check the 
-  std::fseek(this->file, 0, this->f_next);
-  b = std::fgetc(this->file);
+  std::fseek(this->input_file, 0, this->f_next);
+  b = std::fgetc(this->input_file);
 
   return this->f_pos != this->f_next and (b != EOF);
 }

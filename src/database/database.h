@@ -2,10 +2,15 @@
 #ifndef H_DATABASE
 #define H_DATABASE
 
+#include <fstream>   // FILE
 #include <cmath>     // ceil, log2, pow
+#include <string>    // std::to_string
 #include <cstring>   // strcpy
+#include <stdexcept> // throw invalid_argument
 
 #include "../record/record.h"
+#define BLOCK_SIZE 4000
+
 
 struct Bucket {
   long int target_hash;
@@ -24,9 +29,11 @@ public:
   void add_record(Record);
 
 private:
+  std::FILE *index_file;
+  char* index_filename;
+
   int num_buckets;
   Bucket* buckets;
-  char *index_file;
 
   long int hash(long int key);
   int num_lsb();
