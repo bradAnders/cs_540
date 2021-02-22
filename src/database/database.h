@@ -21,7 +21,7 @@ public:
   Database(const char* index_file, int intial_bucket_count);
   ~Database();
 
-  void add_record(Record*);
+  void add_record(Record);
 
 private:
   int num_buckets;

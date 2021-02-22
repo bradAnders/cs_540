@@ -30,9 +30,9 @@ Database::~Database(void)
  * 
  * @param record 
  */
-void Database::add_record(Record* record)
+void Database::add_record(Record record)
 {
-  long int raw_id = this->hash(record->id);
+  long int raw_id = this->hash(record.id);
   long int bucket_id;
 
   if (raw_id >= this->num_buckets)

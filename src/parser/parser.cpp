@@ -36,7 +36,7 @@ Parser::~Parser(void)
  * Reads the file to get the next record
  */
 // TODO - Vectorize this
-Record* Parser::next_record()
+Record Parser::next_record()
 {
   return this->parse_line(this->next_line());
 }
@@ -44,10 +44,10 @@ Record* Parser::next_record()
 /**
  * Reads the next row in the file as a string
  */
-std::string* Parser::next_line()
+std::string Parser::next_line()
 {
   char b;
-  std::string* next_line = new std::string;
+  std::string next_line = "";
 
   // Move the file cursor to next line
   std::fseek(this->file, 0, this->f_next);
@@ -72,7 +72,7 @@ std::string* Parser::next_line()
       break;
     }
   }
-  *next_line = this->line_buffer;
+  next_line = this->line_buffer;
   return next_line;
 }
 
@@ -80,13 +80,13 @@ std::string* Parser::next_line()
  * Reads the next row in the file as a string
  */
 // TODO - Vectorize this
-Record* Parser::parse_line(const std::string* record_str)
+Record Parser::parse_line(const std::string record_str)
 {
 
-  std::istringstream record_steam(*record_str);
+  std::istringstream record_steam(record_str);
   std::string token;
-  char *int_str = new char[this->buffer_size];
-  Record* rec = new Record;
+  char *int_str = new char[BUFFER_SIZE];
+  Record rec = {}; // new Record;
 
   for (int i = 0; i < 4; i++)
   {
@@ -103,24 +103,24 @@ Record* Parser::parse_line(const std::string* record_str)
 
       // ID
       case 0:
-        rec->id = std::atoi(int_str);
+        rec.id = std::atoi(int_str);
         break;
 
       // Name
       case 1:
-        token.copy(rec->name, SIZE_NAME - 1, 0);
-        rec->name[std::min(token.length(), SIZE_NAME - 1)] = 0; // End the string
+        token.copy(rec.name, SIZE_NAME - 1, 0);
+        rec.name[std::min(token.length(), SIZE_NAME - 1)] = 0; // End the string
         break;
 
       // Bio
       case 2:
-        token.copy(rec->bio, SIZE_BIO - 1, 0);
-        rec->bio[std::min(token.length(), SIZE_BIO - 1)] = 0; // End the string
+        token.copy(rec.bio, SIZE_BIO - 1, 0);
+        rec.bio[std::min(token.length(), SIZE_BIO - 1)] = 0; // End the string
         break;
 
       // Manager ID
       case 3:
-        rec->mid = std::atoi(int_str);
+        rec.mid = std::atoi(int_str);
         break;
 
       default:
@@ -133,9 +133,7 @@ Record* Parser::parse_line(const std::string* record_str)
     }
   }
 
-  delete record_str;
-
-  std::cout << rec->id << ", " << rec->name << ", " << rec->mid << std::endl;
+  std::cout << rec.id << ", " << rec.name << ", " << rec.mid << std::endl;
   return rec;
 }
 

@@ -13,6 +13,8 @@
 
 #include "../record/record.h"
 
+#define BUFFER_SIZE 4000
+
 /**
  * Parses a .CSV file into records
  */
@@ -23,18 +25,17 @@ public:
   Parser(const char *input_filename);
   ~Parser();
 
-  Record* next_record(); // TODO - Vectorize this
+  Record next_record(); // TODO - Vectorize this
   bool more_records();
-  const int buffer_size = 4000; // Number of bytes to copy into an attribute
 
 private:
   std::FILE *file;
-  char *input_filename;
+  char* input_filename;
   long int f_pos;
   long int f_next;
-  char *line_buffer;
-  std::string* next_line();
-  Record* parse_line(const std::string* record_str); // TODO - Vectorize this
+  char* line_buffer;
+  std::string next_line();
+  Record parse_line(const std::string record_str); // TODO - Vectorize this
 };
 
 #endif
