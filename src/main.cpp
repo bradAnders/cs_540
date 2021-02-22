@@ -1,17 +1,15 @@
 
 #include "main.h"
 
+
 int main(int argc, char **args)
 {
   unsigned long long id;
   std::string buffer;
   char *endptr;
 
-  if (argc <= 1)
-    return raise("No arguments provided");
-
-  if (args[1][0] != '-')
-    return raise("Arguments must start with '-'");
+  if (argc <= 1)             throw std::invalid_argument("No arguments provided");
+  if (args[1][0] != '-')     throw std::invalid_argument("Arguments must start with '-'");
 
   switch (args[1][1])
   {
@@ -19,52 +17,43 @@ int main(int argc, char **args)
   // Index creation
   case 'C':
 
-    if (argc != 2)
-      return raise("No extra argments accepted");
+    if (argc != 2)            throw std::invalid_argument("No extra argments accepted");
 
-    create_index(F_DATABASE, F_INDEX);
+    create_index(F_IMPORT, F_INDEX);
     break;
 
   // ID lookup
   case 'L':
 
-    // No id provided
-    if (argc != 3)
-      return raise("ID expected after -L");
-
-    // Id is not an int
-    if (!is_pos_int(args[2]))
-      return raise("ID must be a positive integer");
-
-    // Id is too long to be parsed
-    if (strlen(args[2]) >= 20)
-      return raise("ID string is too long");
-
-    // Id is too big
+    if (argc != 3)             throw std::invalid_argument("ID expected after -L");
+    if (!is_pos_int(args[2]))  throw std::invalid_argument("ID must be a positive integer");
+    if (strlen(args[2]) >= 20) throw std::invalid_argument("ID string is too long");
     id = strtoull(args[2], &endptr, 10);
-    if (id > 4294967295)
-      return raise("ID max size is 8 bytes");
+    if (id > 4294967295)       throw std::invalid_argument("ID max size is 8 bytes");
+    if (id <= 0)               throw std::invalid_argument("ID must be a positive integer");
 
-    // Id must be positive
-    if (id <= 0)
-      return raise("ID must be a positive integer");
-
-    lookup_id(F_DATABASE, F_INDEX, id);
+    lookup_id(F_INDEX, id);
     break;
 
   //
   default:
-    return raise("Unrecognized switch");
+    throw std::invalid_argument("Unrecognized switch");
   }
 
   return 0;
 }
 
-int raise(const char *message)
+void create_index(const char *import_file, const char *index_file)
 {
-  std::cout << message << std::endl;
-  std::cout << "Valid arguments: '-C' for index creation or '-L [id]' for id lookup" << std::endl;
-  return 1;
+  Parser csv_read(import_file);
+  Database database(index_file, 12);
+
+  while (csv_read.more_records())
+    database.add_record(csv_read.next_record());
+}
+
+void lookup_id(const char *index, int id) {
+  ;
 }
 
 bool is_pos_int(const char *buffer)

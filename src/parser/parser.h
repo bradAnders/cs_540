@@ -3,7 +3,7 @@
 #define H_PARSER
 
 // Built in libraries
-#include <iostream>
+#include <iostream>  // cout / cin
 #include <fstream>   // CSV file
 #include <sstream>   // Record string
 #include <algorithm> // std::min
@@ -23,9 +23,9 @@ public:
   Parser(const char *input_filename);
   ~Parser();
 
-  Record next_record(); // TODO - Vectorize this
-
-  bool more_records(); 
+  Record* next_record(); // TODO - Vectorize this
+  bool more_records();
+  const int buffer_size = 4000; // Number of bytes to copy into an attribute
 
 private:
   std::FILE *file;
@@ -33,8 +33,8 @@ private:
   long int f_pos;
   long int f_next;
   char *line_buffer;
-  std::string next_line();
-  Record parse_line(const std::string record_str);
+  std::string* next_line();
+  Record* parse_line(const std::string* record_str); // TODO - Vectorize this
 };
 
 #endif
