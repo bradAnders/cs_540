@@ -46,7 +46,7 @@ int main(int argc, char **args)
 void create_index(const char *import_file, const char *index_file)
 {
   Parser csv_read(import_file);
-  Database database(index_file, 12);
+  Database database(index_file, 10);
 
   while (csv_read.more_records())
     database.add_record(csv_read.next_record());

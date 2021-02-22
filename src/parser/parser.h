@@ -26,6 +26,7 @@ public:
   ~Parser();
 
   Record next_record(); // TODO - Vectorize this
+  Record parse_line(const std::string record_str); // TODO - Vectorize this
   bool more_records();
 
 private:
@@ -35,7 +36,6 @@ private:
   long int f_next;
   char* line_buffer;
   std::string next_line();
-  Record parse_line(const std::string record_str); // TODO - Vectorize this
 };
 
 #endif

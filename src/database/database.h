@@ -6,9 +6,11 @@
 #include <cmath>     // ceil, log2, pow
 #include <string>    // std::to_string
 #include <cstring>   // strcpy
+#include <sstream>   // Record string
 #include <stdexcept> // throw invalid_argument
 
 #include "../record/record.h"
+#include "../parser/parser.h"
 #define BLOCK_SIZE 4000
 
 
@@ -17,6 +19,13 @@ struct Bucket {
   long int file_pos;
   int num_linked;
   double capacity;
+};
+
+struct Block {
+  long int block_id;
+  long int next;
+  int num_records;
+  Record *records;
 };
 
 class Database
@@ -34,6 +43,12 @@ private:
 
   int num_buckets;
   Bucket* buckets;
+
+  void initialize_index(int intial_bucket_count);
+  void read_from_index(void);
+  char *get_header(void);
+
+  Block parse_block(char *read_buffer);
 
   long int hash(long int key);
   int num_lsb();
